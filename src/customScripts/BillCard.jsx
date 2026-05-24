@@ -25,6 +25,26 @@ const BillCard = (props) => {
     const [tipAmount, setTipAmount] = useState(0.0);
     const [amountPerPerson, setAmountPerPerson] = useState(0.0);
 
+    const handleCalculation = (e) => {
+        e.preventDefault();
+
+        if (Number(people) <= 0) {
+            setOverride(true);
+            setShowResult(false);
+            return;
+        }
+
+        setOverride(false);
+        const computedTip = calculateTipAmount(bill, tipPercent);
+        const computedTotal = calculateTotalBill(bill, computedTip);
+        const computedPerPerson = calculatePerPersonAmount(computedTotal, people);
+
+        setTipAmount(computedTip.toFixed(2));
+        setTotalBill(computedTotal.toFixed(2));
+        setAmountPerPerson(computedPerPerson.toFixed(2));
+        setShowResult(true);
+    }
+
     return ( 
         <>
             <Card className="w-full max-w-md h-full max-h-md bg-card text-card-foreground border-border p-[32px]">
@@ -33,17 +53,26 @@ const BillCard = (props) => {
                     <CardDescription className="text-zinc-400">Enter bill amount and select Tip</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6"> {/* 6 px margin top*/}
+                <form onSubmit={handleCalculation}>
                     <div className="space-y-2 text-center">
                         <label className="text-xl font-medium text-zinc-300 block pb-[8px]">Bill Amount</label>
                         <Input 
                             type="number"
                             placeholder="0.00"
                             value={bill}
-                            onChange={(e) => setBill(e.target.value >= 0 ? e.target.value : 0)}
+                            onChange={(e) => {
+                                const val = Number(e.target.value);
+                                if (val > 10000000) {
+                                    setBill(val);
+                                } else {
+                                    setBill(val >= 0 ? e.target.value : 0)
+                                }
+                                setShowResult(false);
+                            }}
                             className="bg-zinc-950 border-zinc-800 text-zinc-50 w-[90px] min-w-20"
                         />
                     </div>
-                    {/* Box for selecting number of people. Default 1 */}
+                    {/* Box for selecting number of people.*/}
                     <div className="text-center p-3">
                         <label className="text-xl font-medium text-zinc-300 block pb-2">Number of People</label>
                         <Input 
@@ -74,30 +103,15 @@ const BillCard = (props) => {
                     <div className="space-y-2 w-full max-w flex justify-center">
                         
                         <Button
-                            onClick={() => {
-                                if (people == 0) {
-                                    setOverride(true);
-                                    return;
-                                }
-                                setOverride(false);
-                                const computedTip = calculateTipAmount(bill, tipPercent);
-                                const computedTotal = calculateTotalBill(bill, computedTip);
-                                const computedPerPerson = calculatePerPersonAmount(computedTotal, people);
-                                // fixing to 2 decimal places
-                                setTipAmount(computedTip.toFixed(2));
-                                setTotalBill(computedTotal.toFixed(2));
-                                setAmountPerPerson(computedPerPerson.toFixed(2));
-
-                                setShowResult(true);                                
-                            }}                            
-                            className="max-w-1/3 min-w-20 bg-purple-500 text-zinc-50 text-x p-5 hover:bg-purple-700"
+                            type="submit"     
+                            className="max-w-26 min-w-20 mt-4 bg-purple-500 text-zinc-50 text-x p-5 hover:bg-purple-700 cursor-pointer"
                         > 
                         Calculate
                         </Button>
                     </div>
                     {/* Results section. Should show Total bill (tip included), the tip amount and amount per person */}
                    {showResult === true && !override && (
-                        <div className="w-full grid grid-cols-3 mt-4 gap-2 bg-zinc-950 border border-zinc-800 text-zinc-50 rounded-xl p-4">
+                        <div className="w-full grid grid-cols-3 mt-4 gap-2 bg-zinc-950 border border-zinc-800 text-zinc-50 rounded-xl p-4 pl-0 pr-0">
                             {/* Total Bill */}
                             <div className="flex flex-col items-center justify-between text-center min-h-[90px]">
                                 <span className="text-sm font-medium text-zinc-400">Total Bill</span>
@@ -121,8 +135,8 @@ const BillCard = (props) => {
 
                         </div>
                     )}
+                </form>
                 </CardContent>
-                            
             </Card>
         </>
     );
