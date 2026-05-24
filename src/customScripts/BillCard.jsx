@@ -39,7 +39,7 @@ const BillCard = (props) => {
                             placeholder="0.00"
                             value={bill}
                             onChange={(e) => setBill(e.target.value >= 0 ? e.target.value : 0)}
-                            className="bg-zinc-950 border-zinc-800 text-zinc-50 w-1/3"
+                            className="bg-zinc-950 border-zinc-800 text-zinc-50 w-[90px] min-w-20"
                         />
                     </div>
                     {/* Box for selecting number of people. Default 1 */}
@@ -47,18 +47,16 @@ const BillCard = (props) => {
                         <label className="text-xl font-medium text-zinc-300 block pb-2">Number of People</label>
                         <Input 
                             type="number"
-                            default="1"
                             placeholder="1"
                             value={people /* people state */}
                             onChange={(e)=> setPeople(e.target.value >= 1 ? e.target.value: 1)}
-                            className="bg-zinc-100 text-zinc-50 w-1/3"
+                            className="bg-zinc-100 text-zinc-50 w-[90px] min-w-20"
                         />
                     </div>
                     <div className="text-center space-y-4">
                         <label className="text-xl font-medium text-zinc-300 block">Tip Percent</label>
                         <Input 
                             type="number"
-                            default="1"
                             placeholder="1"
                             value={tipPercent /* people state */}
                             onChange={(e) => {
@@ -67,7 +65,7 @@ const BillCard = (props) => {
                                 else if (val <= 0) val = 0;
                                 setTipPercent(val);
                             }}
-                            className="bg-zinc-700 border-zinc-800 text-zinc-50 w-1/3"
+                            className="bg-zinc-700 border-zinc-800 text-zinc-50 w-[90px] min-w-20"
                         />
                     </div>
                     <div className="space-y-2 w-full max-w flex justify-center">
@@ -84,23 +82,36 @@ const BillCard = (props) => {
 
                             setShowResult(true);                                
                             }}                            
-                            className="max-w-1/3 bg-purple-500 text-zinc-50 text-x p-5 hover:bg-purple-700"
+                            className="max-w-1/3 min-w-20 bg-purple-500 text-zinc-50 text-x p-5 hover:bg-purple-700"
                         > 
                         Calculate
                         </Button>
                     </div>
                     {/* Results section. Should show Total bill (tip included), the tip amount and amount per person */}
-                    {showResult == true && (
-                        <>
-                        <div className="grid grid-rows-2 grid-cols-3 mt-2 gap-5 bg-zinc-800 text-zinc-50">
-                            <span className="text-xl">Total Bill</span>
-                            <span className="text-xl">Tip Amount</span>
-                            <span className="text-xl">Per Person Amount</span>
-                            <span className="text-xl">{totalBill}</span>
-                            <span className="text-xl">{tipAmount}</span>
-                            <span className="text-xl">{amountPerPerson}</span>
+                   {showResult === true && (
+                        <div className="w-full grid grid-cols-3 mt-4 gap-2 bg-zinc-950 border border-zinc-800 text-zinc-50 rounded-xl p-4">
+                            {/* Total Bill */}
+                            <div className="flex flex-col items-center justify-between text-center min-h-[90px]">
+                                <span className="text-sm font-medium text-zinc-400">Total Bill</span>
+                                <div className="w-4/5 border-b border-zinc-800 my-2"></div> 
+                                <span className="text-lg font-bold text-zinc-100">${totalBill}</span>
+                            </div>
+
+                            {/* Tip Amount */}
+                            <div className="flex flex-col items-center justify-between text-center min-h-[90px]">
+                                <span className="text-sm font-medium text-zinc-400">Tip Amount</span>
+                                <div className="w-4/5 border-b border-zinc-800 my-2"></div>
+                                <span className="text-lg font-bold text-emerald-400">${tipAmount}</span>
+                            </div>
+
+                            {/* Per Person Amount */}
+                            <div className="flex flex-col items-center justify-between text-center min-h-[90px]">
+                                <span className="text-sm font-medium text-zinc-400">Per Person</span>
+                                <div className="w-4/5 border-b border-zinc-800 my-2"></div>
+                                <span className="text-lg font-bold text-purple-400">${amountPerPerson}</span>
+                            </div>
+
                         </div>
-                        </>
                     )}
                 </CardContent>
                             
