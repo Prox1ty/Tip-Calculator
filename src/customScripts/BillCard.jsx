@@ -85,20 +85,25 @@ const BillCard = (props) => {
                             className={`bg-zinc-100 text-zinc-50 w-[90px] min-w-20 transition-colors ${override ? "border-red-500 focus-visible:ring-red-500": "border-zinc-800"}`}
                         />
                     </div>
-                    <div className="text-center space-y-4">
+                    <div className="text-center space-y-4 flex flex-col items-center">
                         <label className="text-xl font-medium text-zinc-300 block">Tip Percent</label>
+                        <div className="relative w-[90px] min-w-20 flex justify-center">
                         <Input 
                             type="number"
                             placeholder="1"
-                            value={tipPercent /* people state */}
+                            value={tipPercent}
                             onChange={(e) => {
                                 let val = Number(e.target.value)
                                 if (val >= 100) val = 100;
                                 else if (val <= 0) val = 0;
                                 setTipPercent(val);
                             }}
-                            className="bg-zinc-700 border-zinc-800 text-zinc-50 w-[90px] min-w-20"
+                            className="bg-zinc-700 border-zinc-800 text-zinc-50 w-full min-w-20 pr-6"
                         />
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-medium text-zinc-400 select none pointer-events-none">
+                            %
+                        </span>
+                        </div>
                     </div>
                     <div className="space-y-2 w-full max-w flex justify-center">
                         
