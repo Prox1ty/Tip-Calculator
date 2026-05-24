@@ -100,7 +100,7 @@ const BillCard = (props) => {
                             }}
                             className="bg-zinc-700 border-zinc-800 text-zinc-50 w-full min-w-20 pr-6"
                         />
-                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-medium text-zinc-400 select none pointer-events-none">
+                        <span className="absolute right-2 top-1/4 text-sm font-medium text-zinc-400 select none pointer-events-none">
                             %
                         </span>
                         </div>
