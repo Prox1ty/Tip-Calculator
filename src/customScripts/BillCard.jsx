@@ -50,8 +50,10 @@ const BillCard = (props) => {
                             type="number"
                             placeholder="1"
                             value={people /* people state */}
-                            onChange={(e)=> setPeople(e.target.value >= 0 ? e.target.value: 0)}
-                            className="bg-zinc-100 text-zinc-50 w-[90px] min-w-20"
+                            onChange={(e)=> {
+                                setPeople(e.target.value >= 0 ? e.target.value: 0);
+                            }}
+                            className={`bg-zinc-100 text-zinc-50 w-[90px] min-w-20 transition-colors ${override ? "border-red-500 focus-visible:ring-red-500": "border-zinc-800"}`}
                         />
                     </div>
                     <div className="text-center space-y-4">
@@ -73,10 +75,8 @@ const BillCard = (props) => {
                         
                         <Button
                             onClick={() => {
-                                if (people <= 0) {
-                                    alert("Number of people must be atleast 1");
+                                if (people == 0) {
                                     setOverride(true);
-                                    setShowResult(false);
                                     return;
                                 }
                                 setOverride(false);
