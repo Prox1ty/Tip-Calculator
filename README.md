@@ -2,6 +2,8 @@
 
 A sleek, minimal, and responsive Tip Calculator built with React, Vite, and styled using Tailwind CSS v4 and Shadcn UI components.
 
+
+
 ## Features
 
 - **Asynchronous Live Calculation:** Computes tip amounts, total bills, and split distributions per person upon form submission.

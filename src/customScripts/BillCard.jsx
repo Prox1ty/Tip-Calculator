@@ -20,6 +20,7 @@ const BillCard = (props) => {
     const [people, setPeople] = useState(1);
     const [tipPercent, setTipPercent] = useState(15); // default tip 15. Modifiable.
     const [showResult, setShowResult] = useState(false);
+    const [override, setOverride] = useState(false);
     const [totalBill, setTotalBill] = useState(0.0);
     const [tipAmount, setTipAmount] = useState(0.0);
     const [amountPerPerson, setAmountPerPerson] = useState(0.0);
@@ -49,7 +50,7 @@ const BillCard = (props) => {
                             type="number"
                             placeholder="1"
                             value={people /* people state */}
-                            onChange={(e)=> setPeople(e.target.value >= 1 ? e.target.value: 1)}
+                            onChange={(e)=> setPeople(e.target.value >= 0 ? e.target.value: 0)}
                             className="bg-zinc-100 text-zinc-50 w-[90px] min-w-20"
                         />
                     </div>
@@ -72,15 +73,22 @@ const BillCard = (props) => {
                         
                         <Button
                             onClick={() => {
-                            const computedTip = calculateTipAmount(bill, tipPercent);
-                            const computedTotal = calculateTotalBill(bill, computedTip);
-                            const computedPerPerson = calculatePerPersonAmount(computedTotal, people);
-                            // fixing to 2 decimal places
-                            setTipAmount(computedTip.toFixed(2));
-                            setTotalBill(computedTotal.toFixed(2));
-                            setAmountPerPerson(computedPerPerson.toFixed(2));
+                                if (people <= 0) {
+                                    alert("Number of people must be atleast 1");
+                                    setOverride(true);
+                                    setShowResult(false);
+                                    return;
+                                }
+                                setOverride(false);
+                                const computedTip = calculateTipAmount(bill, tipPercent);
+                                const computedTotal = calculateTotalBill(bill, computedTip);
+                                const computedPerPerson = calculatePerPersonAmount(computedTotal, people);
+                                // fixing to 2 decimal places
+                                setTipAmount(computedTip.toFixed(2));
+                                setTotalBill(computedTotal.toFixed(2));
+                                setAmountPerPerson(computedPerPerson.toFixed(2));
 
-                            setShowResult(true);                                
+                                setShowResult(true);                                
                             }}                            
                             className="max-w-1/3 min-w-20 bg-purple-500 text-zinc-50 text-x p-5 hover:bg-purple-700"
                         > 
@@ -88,7 +96,7 @@ const BillCard = (props) => {
                         </Button>
                     </div>
                     {/* Results section. Should show Total bill (tip included), the tip amount and amount per person */}
-                   {showResult === true && (
+                   {showResult === true && !override && (
                         <div className="w-full grid grid-cols-3 mt-4 gap-2 bg-zinc-950 border border-zinc-800 text-zinc-50 rounded-xl p-4">
                             {/* Total Bill */}
                             <div className="flex flex-col items-center justify-between text-center min-h-[90px]">
